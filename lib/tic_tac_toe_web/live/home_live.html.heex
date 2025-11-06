@@ -1,0 +1,29 @@
+<div class="w-full h-full flex flex-col items-center space-y-5">
+  <p class="w-full text-center text-2xl">
+    <%= case @board_state do %>
+      <% :ongoing -> %>
+        Jogo em progresso
+      <% {:winner, winner} -> %>
+        {"#{winner} venceu!"}
+      <% :tie -> %>
+        {"Empate!"}
+    <% end %>
+  </p>
+  <button class="w-full text-center text-blue-500 text-xl" phx-click="restart">
+    Reiniciar Game
+  </button>
+  <div class="grid grid-cols-3 grid-rows-3 w-[calc(100vh-300px)] h-[calc(100vh-300px)]">
+    <button
+      :for={{cell_index, cell_value} <- @board}
+      id={"cell-#{cell_index}"}
+      phx-click="cell_clicked"
+      phx-value-index={cell_index}
+      class={[
+        cell_color(cell_value),
+        "w-full border border-gray-300 h-full text-3xl"
+      ]}
+    >
+      {cell_value}
+    </button>
+  </div>
+</div>
