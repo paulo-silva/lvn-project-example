@@ -9,39 +9,38 @@ defmodule TicTacToeWeb.HomeLive.SwiftUI do
     assigns = assign(assigns, :rows, Enum.chunk_every(assigns.board, 3))
 
     ~LVN"""
-    <VStack>
-      <HStack>
-        <%= case @board_state do %>
-          <% :ongoing -> %>
-            <Text>Jogo em progresso</Text>
-          <% {:winner, winner} -> %>
-            <Text>{"#{winner} venceu!"}</Text>
-          <% :tie -> %>
-            <Text>{"Empate!"}</Text>
-        <% end %>
-      </HStack>
-      <HStack>
-        <Button phx-click="restart" style={".buttonStyle(.plain); .controlSize(.small)"}>
-          <Text style={".padding(2); .background(Color.orange);"}>Reiniciar Game</Text>
-        </Button>
-      </HStack>
-      <Grid alignment="center" horizontalSpacing="20" verticalSpacing="20" style=".padding()">
+    <VStack spacing="8" style=".padding()">
+      <Spacer />
+      <Spacer />
+      <%= case @board_state do %>
+        <% :ongoing -> %>
+          <Text style={".font(.headline); .foregroundStyle(.secondary)"}>Jogo em progresso</Text>
+        <% {:winner, winner} -> %>
+          <Text style={".font(.smallTitle); .fontWeight(.bold); .foregroundStyle(.green);"}>{"🎉 #{winner} venceu!"}</Text>
+        <% :tie -> %>
+          <Text style={".font(.smallTitle); .fontWeight(.bold); .foregroundStyle(.orange)"}>{"🤝 Empate!"}</Text>
+      <% end %>
+      <Grid alignment="center" horizontalSpacing="4" verticalSpacing="4">
         <GridRow :for={row <- @rows} alignment="center">
           <Button
             :for={{cell_index, cell_value} <- row}
             id={"cell-#{cell_index}"}
             phx-click="cell_clicked"
             phx-value-index={cell_index}
-            style={".buttonStyle(.borderedProminent); .controlSize(.mini);"}
+            style={".buttonStyle(.bordered); .controlSize(.mini);"}
           >
             <%= if cell_value do %>
-              <Label>{cell_value}</Label>
+              <Text style={".font(.system(size: 16)); .fontWeight(.semibold)"}>{cell_value}</Text>
             <% else %>
-              <Label>_</Label>
+              <Text style={".foregroundStyle(.tertiary)"}> </Text>
             <% end %>
           </Button>
         </GridRow>
       </Grid>
+      <Spacer />
+      <Button phx-click="restart" style={".buttonStyle(.borderedProminent); .controlSize(.small); .tint(.green)"}>
+        <Label systemImage="arrow.clockwise">Reiniciar</Label>
+      </Button>
     </VStack>
     """
   end
@@ -50,37 +49,38 @@ defmodule TicTacToeWeb.HomeLive.SwiftUI do
     assigns = assign(assigns, :rows, Enum.chunk_every(assigns.board, 3))
 
     ~LVN"""
-    <VStack>
-      <HStack>
+    <VStack spacing="20" style=".padding()">
+      <Spacer />
+      <VStack spacing="10">
+        <Text style={".font(.largeTitle); .fontWeight(.black); .foregroundStyle(.blue)"}>Jogo da Velha</Text>
         <%= case @board_state do %>
           <% :ongoing -> %>
-            <Text>Jogo em progresso</Text>
+            <Text style={".font(.title2); .foregroundStyle(.secondary)"}>Sua vez de jogar</Text>
           <% {:winner, winner} -> %>
-            <Text>{"#{winner} venceu!"}</Text>
+            <Text style={".font(.title); .fontWeight(.bold); .foregroundStyle(.green)"}>{"🎉 #{winner} venceu!"}</Text>
           <% :tie -> %>
-            <Text>{"Empate!"}</Text>
+            <Text style={".font(.title); .fontWeight(.bold); .foregroundStyle(.orange)"}>{"🤝 Empate!"}</Text>
         <% end %>
-      </HStack>
-      <HStack>
-        <Button phx-click="restart"><Text>Reiniciar Game</Text></Button>
-      </HStack>
-      <Grid alignment="center" horizontalSpacing="20" verticalSpacing="20" style=".padding()">
+      </VStack>
+      <Spacer />
+      <Grid alignment="center" horizontalSpacing="12" verticalSpacing="12">
         <GridRow :for={row <- @rows} alignment="center">
           <Button
             :for={{cell_index, cell_value} <- row}
             id={"cell-#{cell_index}"}
             phx-click="cell_clicked"
             phx-value-index={cell_index}
-            style={".buttonStyle(.borderedProminent); .controlSize(.large);"}
+            style={".buttonStyle(.bordered); .controlSize(.extraLarge);"}
           >
-            <%= if cell_value do %>
-              <Label>{cell_value}</Label>
-            <% else %>
-              <Label>_</Label>
-            <% end %>
+            <Text style={".font(.system(size: 48)); .fontWeight(.bold)"}>{cell_value || "_"}</Text>
           </Button>
         </GridRow>
       </Grid>
+      <Spacer />
+      <Button phx-click="restart" style={".buttonStyle(.borderedProminent); .controlSize(.large); .tint(.green)"}>
+        <Label systemImage="arrow.clockwise">Reiniciar Jogo</Label>
+      </Button>
+      <Spacer />
     </VStack>
     """
   end
